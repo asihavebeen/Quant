@@ -58,10 +58,10 @@ def get_sname():
     print("Get Stock Codes sB Complete")
 
     # 打印列表中的所有股票代码，以逗号分隔
-    # print(len(stock_codes_hA))
-    # print(len(stock_codes_hB))
-    # print(len(stock_codes_sA))
-    # print(len(stock_codes_sB))
+    print(len(stock_codes_hA))
+    print(len(stock_codes_hB))
+    print(len(stock_codes_sA))
+    print(len(stock_codes_sB))
 
     # 关闭浏览器对象
     driver.quit()

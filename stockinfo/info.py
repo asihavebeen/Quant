@@ -98,7 +98,8 @@ def getInfo(driver, id, forward):
     iFrame = allPage.find_element(By.TAG_NAME, "iframe")
     driver.switch_to.frame(iFrame)
     innerHTML = driver.find_element(By.TAG_NAME, "html")
-    downButton = innerHTML.find_element(By.ID, "exportButton")
+    innerTable = innerHTML.find_element(By.ID, "cwzbTable")
+    downButton = innerTable.find_element(By.ID, "exportButton")
     downButton.click()
 
     # 记录分红和转股的情况
@@ -116,8 +117,26 @@ def getInfo(driver, id, forward):
     iFrame = allPage.find_element(By.TAG_NAME, "iframe")
     driver.switch_to.frame(iFrame)
     innerHTML = driver.find_element(By.TAG_NAME, "html")
-    downButton = innerHTML.find_element(By.ID, "exportButton")
-    downButton.click()
+    bonusTable = innerHTML.find_element(By.ID, "bonus_table")
+    # 获取表格中的所有行元素
+    rows = bonusTable.find_elements(By.TAG_NAME, "tr")
+    # 获取行中的所有单元格元素
+    cells = rows[0].find_elements(By.TAG_NAME, "th")
+    # 遍历每一个单元格元素
+    for cell in cells:
+        # 打印单元格的文本内容
+        print(cell.text, end=" ")
+    print()
+    # 遍历每一行元素
+    for row in rows[1:]:
+        # 获取行中的所有单元格元素
+        cells = row.find_elements(By.TAG_NAME, "td")
+        # 遍历每一个单元格元素
+        for cell in cells:
+            # 打印单元格的文本内容
+            print(cell.text, end=" ")
+        # 换行
+        print()
 
     infoRecord.PS_TTM = "0" # 最近12个月市销率，股价/最近12个月每股营业收入
     infoRecord.PC_TTM = "0" # 最近12个月市现率，股价/最近12个月每股经营现金流
@@ -192,7 +211,9 @@ print("Get name success and save!")
 
 # 创建一个chrome浏览器对象
 options = webdriver.ChromeOptions()
-prefs = {"download.default_directory" : path.dirname(path.abspath(__file__)) + "report/"}
+# prefs = {"download.default_directory" : path.dirname(path.abspath(__file__)) + "report/",
+#          "download.prompt_for_download": False}
+prefs = {"download.prompt_for_download": False}
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options=options)
 
