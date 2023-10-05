@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
 # 定义一个函数，用于获取当前页面的所有股票的股票代码，并添加到列表中
 def get_stock_codes(driver, button, id, stock_code_list):
     # 切换页面

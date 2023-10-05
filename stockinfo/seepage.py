@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-import undetected_chromedriver as uc
 import datetime
 
 import sname

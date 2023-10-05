@@ -4,40 +4,36 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-import requests
 import pandas as pd
-from bs4 import BeautifulSoup
-import undetected_chromedriver as uc
 import datetime
 
 import sname
-import time
 import pickle
 import os.path as path
 
 # 记录数据的数据结构
 class infoClass:
     def __init__(self):
-        self.code = 1 # 股票的代码，上证股票以sh开头，深证股票以sz开头
-        self.date = 1 # 交易日期
-        self.open = 1 # 开盘价
-        self.high = 1 # 最高价
-        self.low = 1 # 最低价
-        self.close = 1 # 收盘价
-        self.change = 1 # 涨跌幅，复权之后的真实涨跌幅，保证准确。可以据此计算复权价格。
-        self.volume = 1 # 成交量
-        self.money = 1 # 成交额
-        self.traded_market_value = 1 # 流通市值
-        self.market_value = 1 # 总市值
-        self.turnover = 1 # 换手率，成交量/流通股本
-        self.adjust_price = 1 # 收盘价的后复权价，复权开始时间为股票上市日，精确到小数点后10位
-        self.report_date = 1 # 最近一期财务报告实际发布的日期
-        self.report_type = 1 # 最近一期财务报告的类型，3-31对应一季报，6-30对应半年报，9-30对应三季报，12-31对应年报
-        self.PE_TTM = 1 # 最近12个月市盈率，股价/最近12个月归属母公司的每股收益TTM
-        self.PS_TTM = 1 # 最近12个月市销率，股价/最近12个月每股营业收入
-        self.PC_TTM = 1 # 最近12个月市现率，股价/最近12个月每股经营现金流
-        self.PB = 1 # 市净率，股价/最近期财报每股净资产
-        self.adjust_price_f = 1 # 收盘价的前复权价，复权开始时间为股票最近一个交易日，精确到小数点后10位
+        self.code = 1  # 股票的代码，上证股票以sh开头，深证股票以sz开头
+        self.date = 1  # 交易日期
+        self.open = 1  # 开盘价
+        self.high = 1  # 最高价
+        self.low = 1  # 最低价
+        self.close = 1  # 收盘价
+        self.change = 1  # 涨跌幅，复权之后的真实涨跌幅，保证准确。可以据此计算复权价格。
+        self.volume = 1  # 成交量
+        self.money = 1  # 成交额
+        self.traded_market_value = 1  # 流通市值
+        self.market_value = 1  # 总市值
+        self.turnover = 1  # 换手率，成交量/流通股本
+        self.adjust_price = 1  # 收盘价的后复权价，复权开始时间为股票上市日，精确到小数点后10位
+        self.report_date = 1  # 最近一期财务报告实际发布的日期
+        self.report_type = 1  # 最近一期财务报告的类型，3-31对应一季报，6-30对应半年报，9-30对应三季报，12-31对应年报
+        self.PE_TTM = 1  # 最近12个月市盈率，股价/最近12个月归属母公司的每股收益TTM
+        self.PS_TTM = 1  # 最近12个月市销率，股价/最近12个月每股营业收入
+        self.PC_TTM = 1   # 最近12个月市现率，股价/最近12个月每股经营现金流
+        self.PB = 1  # 市净率，股价/最近期财报每股净资产
+        self.adjust_price_f = 1  # 收盘价的前复权价，复权开始时间为股票最近一个交易日，精确到小数点后10位
 
 # 获取数据的函数
 def getInfo(driver, id, forward):
@@ -77,7 +73,7 @@ def getInfo(driver, id, forward):
     infoRecord.PB = innerHTML.find_element(By.ID, "tvaluep").text # 市净率，股价/最近期财报每股净资产
 
     # 东方财富
-    dongUrl = "http://quote.eastmoney.com/" + infoRecord.code + ".html"
+    dongUrl = "http://quote.eastmoney.com/" + str(infoRecord.code) + ".html"
     driver.get(dongUrl)
     # 等待页面加载完成
     wait = WebDriverWait(driver, 10)
